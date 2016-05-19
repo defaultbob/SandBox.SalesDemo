@@ -1,22 +1,28 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-
-public class SandboxRequest
+namespace SalesDemo.Models
 {
-    [Required]
-    public string SessionId { get; set; }
+    public class SandboxRequest
+    {
+        public SandboxRequest()
+        {
+        }
+        public SandboxRequest(User user)
+        {
+            this.User = user;
+        }
 
-    [Required]
-    public string Name { get; set; }
+        public User User { get; set; }
 
-    public string Description { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-    [Required]
-    public string SourceDomain { get; set; }
+        public string Description { get; set; }
 
-    public string TargetDomain { get; set; }
+        public string TargetDomain { get; set; }
 
-    public string Type { get { return "Demo"; } }
-    
-    public string Status { get; set; }
+        public string Type { get { return "Demo"; } }
+
+        public string Status { get; set; }
+    }
 }

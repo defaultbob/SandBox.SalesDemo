@@ -53,7 +53,7 @@ namespace SalesDemo
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Sandbox}/{action=Index}/{id?}");
             });
         }
     }

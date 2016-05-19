@@ -1,10 +1,10 @@
-@model SandboxRequest
+@model SalesDemo.Models.SandboxRequest
 @{
-    ViewData["Title"] = "Sandbox Request";
+    ViewData["Title"] = "Create a Sandbox Request";
 }
 
 <h2>@ViewData["Title"].</h2>
-<form asp-controller="Sandbox" asp-action="SandboxRequest" method="post" class="form-horizontal">
+<form asp-controller="Sandbox" asp-action="Create" method="post" class="form-horizontal">
     <h4>Request a new demo sandbox.</h4>
     <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
@@ -24,6 +24,13 @@
         </div>
     </div>
     <div class="form-group">
+        <label asp-for="User.Domain" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="User.Domain" class="form-control" disabled/>
+            <span asp-validation-for="User.Domain" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
         <label asp-for="Type" class="col-md-2 control-label"></label>
         <div class="col-md-10">
             <input asp-for="Type" class="form-control" disabled/>
@@ -36,8 +43,8 @@
         </div>
     </div>
     
-    <input type="hidden" asp-for="SessionId"/>
-     <input type="hidden" asp-for="SourceDomain"/>
+    <input type="hidden" asp-for="User.Session"/>
+     
 </form>
 
 @section Scripts {
