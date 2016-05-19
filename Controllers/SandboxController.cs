@@ -26,44 +26,8 @@ namespace SalesDemo.Controllers
 
             ViewBag.Domain = user.Domain;
 
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    var baseUri = "https://pm8.vaultdev.com/api/v14.0/objects/users/me";
-                    client.BaseAddress = new Uri(baseUri);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Add("Authorization", session);
-                    var response = await client.GetAsync(baseUri);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var responseJson = await response.Content.ReadAsStringAsync();
-
-                        dynamic dynObj = JsonConvert.DeserializeObject(responseJson);
-
-                        if (dynObj.responseStatus != "SUCCESS")
-                        {
-                            ViewBag.Error = $"Request to {baseUri} was unsuccessful. Result {dynObj.responseStatus}. Error {dynObj.errors[0]}";
-                            return View(user);
-                        }
-                        else
-                        {
-                            var userReturned = dynObj.users[0];
-                            ViewBag.Name = userReturned.user.user_first_name__v + " " + userReturned.user.user_last_name__v;
-                        }
-                    }
-                    else
-                    {
-                        ViewBag.Error = $"Request to {baseUri} was unsuccessful. Status code {response.StatusCode}";
-                        return View(user);
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-            }
-
+            ViewBag.Error = await Services.VaultService.ValidateUser(user);
+            
             return View(user);
         }
 

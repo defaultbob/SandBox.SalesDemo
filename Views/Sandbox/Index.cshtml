@@ -1,6 +1,6 @@
 @model SalesDemo.Models.User
 
-<h2>Hello @ViewBag.Name in domain @ViewBag.Domain</h2>
+<h2 class="text-danger" >@ViewBag.Error</h2>
 
 <form asp-controller="Sandbox" asp-action="Create" method="GET" class="form-horizontal">
      <div class="form-group">
@@ -15,5 +15,3 @@
 <p>
 Your sandbox requests will be here soon... 
 </p>
-
-<p class="text-danger" >@ViewBag.Error</p>
