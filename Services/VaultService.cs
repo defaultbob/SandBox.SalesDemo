@@ -42,14 +42,15 @@ namespace SalesDemo.Services
             }
         }
 
-        internal static Task<Job> GetJobStatus(User user, int id)
+        internal static async Task<Job> GetJobStatus(User user, int id)
         {
-             using (var client = new HttpClient())
+            using (var client = new HttpClient())
             {
-                var baseUri = $"https://{credentials.Domain}/api/v14.0/auth?username={credentials.Username}&password={credentials.Password}";
+                var baseUri = $"https://{user.Domain}/api/v15.0/services/jobs/{id}";
                 client.BaseAddress = new Uri(baseUri);
                 client.DefaultRequestHeaders.Accept.Clear();
-                var response = await client.PostAsync(baseUri, null);
+                client.DefaultRequestHeaders.Add("Authorization", user.Session);
+                var response = await client.GetAsync(baseUri);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseJson = await response.Content.ReadAsStringAsync();
@@ -62,9 +63,11 @@ namespace SalesDemo.Services
                     }
                     else
                     {
-                        return new User(){
-                            Domain = credentials.Domain,
-                            Session = dynObj.sessionId
+                        return new Job()
+                        {
+                            Id = dynObj.data.id,
+                            Status = dynObj.data.status,
+                            Results = dynObj.data.links[1].href
                         };
                     }
                 }
@@ -95,7 +98,8 @@ namespace SalesDemo.Services
                     }
                     else
                     {
-                        return new User(){
+                        return new User()
+                        {
                             Domain = credentials.Domain,
                             Session = dynObj.sessionId
                         };
