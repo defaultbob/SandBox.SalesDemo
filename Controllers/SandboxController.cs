@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using Newtonsoft.Json;
 using SalesDemo.Models;
+using SalesDemo.Services;
 
 namespace SalesDemo.Controllers
 {
@@ -26,7 +27,7 @@ namespace SalesDemo.Controllers
 
             ViewBag.Domain = user.Domain;
 
-            ViewBag.Error = await Services.VaultService.ValidateUser(user);
+            ViewBag.Error = await VaultService.ValidateUser(user);
             
             return View(user);
         }
@@ -39,9 +40,11 @@ namespace SalesDemo.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(SandboxRequest request)
+        public async Task<IActionResult> Create(SandboxRequest request)
         {
-            return this.NoContent();
+            var jobId = await VaultService.CreateSandboxRequest(request.User, request);
+            
+            return RedirectToAction("Job", new {id = jobId});
         }
 
     }

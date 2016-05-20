@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SalesDemo.Models;
 
 namespace SalesDemo.Controllers
 {
@@ -10,7 +11,14 @@ namespace SalesDemo.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return View(new Login());
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Index(Login login)
+        {
+            User user = await Services.VaultService.Login(login);            
+            return RedirectToAction("Index","Sandbox", new {session = user.Session, domain = user.Domain});
         }
 
         public IActionResult About()
