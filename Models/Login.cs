@@ -5,6 +5,7 @@ namespace SalesDemo.Models
     public class Login
     {
         [Required]
+        [Display(Name= "Login domain")]
         public string Domain { get; set; }
         
         [Required]

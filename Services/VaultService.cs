@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using Newtonsoft.Json;
 using SalesDemo.Models;
+using Microsoft.Extensions.Logging.Console;
 
 namespace SalesDemo.Services
 {
@@ -19,10 +20,19 @@ namespace SalesDemo.Services
                 client.BaseAddress = new Uri(baseUri);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Add("Authorization", user.Session);
-                var response = await client.PostAsJsonAsync(baseUri, request);
+
+                var content = new FormUrlEncodedContent(new[]
+                {
+                        new KeyValuePair<string, string>("name", request.Name),
+                        new KeyValuePair<string, string>("type", request.Type),
+                        new KeyValuePair<string, string>("domain", request.TargetDomain)
+                });
+
+                var response = await client.PostAsync(baseUri, content);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseJson = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"response: {responseJson}");
 
                     dynamic dynObj = JsonConvert.DeserializeObject(responseJson);
 
@@ -32,7 +42,46 @@ namespace SalesDemo.Services
                     }
                     else
                     {
-                        return dynObj.data.job_id;
+                        return dynObj.job_id;
+                    }
+                }
+                else
+                {
+                    throw new Exception($"Request to {baseUri} was unsuccessful. Status code {response.StatusCode}");
+                }
+            }
+        }
+
+        internal static async Task<Vault> Activate(Job job)
+        {
+            using (var client = new HttpClient())
+            {
+                var baseUri = $"https://{job.User.Domain}/api/v15.0/objects/sandbox/{job.Id}/activate";
+                client.BaseAddress = new Uri(baseUri);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Add("Authorization", job.User.Session);
+
+                var response = await client.PostAsync(baseUri, null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseJson = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"response: {responseJson}");
+                    dynamic dynObj = JsonConvert.DeserializeObject(responseJson);
+
+                    if (dynObj.responseStatus != "SUCCESS")
+                    {
+                        throw new Exception($"Request to {baseUri} was unsuccessful. Result {dynObj.responseStatus}. Error {dynObj.errors[0]}");
+                    }
+                    else
+                    {
+                        return new Vault()
+                        {
+                            Id = dynObj.data.vault_id__v,
+                            Status = dynObj.data.vault_status__v,
+                            Dns = dynObj.data.vault_dns__v,
+                            Message = responseJson
+                        };
                     }
                 }
                 else
@@ -54,6 +103,7 @@ namespace SalesDemo.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var responseJson = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"response: {responseJson}");
 
                     dynamic dynObj = JsonConvert.DeserializeObject(responseJson);
 
@@ -67,7 +117,7 @@ namespace SalesDemo.Services
                         {
                             Id = dynObj.data.id,
                             Status = dynObj.data.status,
-                            Results = dynObj.data.links[1].href
+                            Message = responseJson
                         };
                     }
                 }
@@ -86,9 +136,11 @@ namespace SalesDemo.Services
                 client.BaseAddress = new Uri(baseUri);
                 client.DefaultRequestHeaders.Accept.Clear();
                 var response = await client.PostAsync(baseUri, null);
+
                 if (response.IsSuccessStatusCode)
                 {
                     var responseJson = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"response: {responseJson}");
 
                     dynamic dynObj = JsonConvert.DeserializeObject(responseJson);
 
@@ -98,11 +150,7 @@ namespace SalesDemo.Services
                     }
                     else
                     {
-                        return new User()
-                        {
-                            Domain = credentials.Domain,
-                            Session = dynObj.sessionId
-                        };
+                        return new User((string)dynObj.sessionId, credentials.Domain);
                     }
                 }
                 else
@@ -126,6 +174,7 @@ namespace SalesDemo.Services
                     if (response.IsSuccessStatusCode)
                     {
                         var responseJson = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"response: {responseJson}");
 
                         dynamic dynObj = JsonConvert.DeserializeObject(responseJson);
 

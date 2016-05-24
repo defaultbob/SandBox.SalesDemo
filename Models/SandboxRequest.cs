@@ -19,9 +19,10 @@ namespace SalesDemo.Models
 
         public string Description { get; set; }
 
+        [Display(Name = "Target Domain Name")]
         public string TargetDomain { get; set; }
 
-        public string Type { get { return "Demo"; } }
+        public string Type { get { return "demo"; } }
 
         public string Status { get; set; }
     }

@@ -1,0 +1,30 @@
+@model SalesDemo.Models.Vault
+
+@{
+    ViewBag.Title = "Vault details";
+}
+<h1>@ViewBag.Title</h1>
+<form asp-controller="" asp-action="" method="" class="form-horizontal">
+    <div class="form-group">
+        <label asp-for="Id" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Id" class="form-control" />
+        </div>
+    </div>  
+    <div class="form-group">
+        <label asp-for="Status" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Status" class="form-control" />
+        </div>
+    </div>
+     <div class="form-group">
+        <label asp-for="Dns" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Dns" class="form-control" />
+        </div>
+    </div>
+    <code lang="json">
+         @Model.Message
+    </code>
+       
+</form>

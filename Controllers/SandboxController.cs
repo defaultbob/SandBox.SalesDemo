@@ -14,17 +14,8 @@ namespace SalesDemo.Controllers
     {
         public async Task<IActionResult> Index(string session, string domain)
         {
-            var user = new User()
-            {
-                Session = session,
-                Domain = domain
-            };
-
-            if (string.IsNullOrEmpty(user.Session) || string.IsNullOrEmpty(user.Domain))
-            {
-                return this.BadRequest("Must provide a session and a domain query string param - there is probably an issue with your Tab URL");
-            }
-
+            var user = new User(session, domain);
+            
             ViewBag.Domain = user.Domain;
 
             ViewBag.Error = await VaultService.ValidateUser(user);
@@ -44,7 +35,7 @@ namespace SalesDemo.Controllers
         {
             var jobId = await VaultService.CreateSandboxRequest(request.User, request);
             
-            return RedirectToAction("Job", new {id = jobId});
+            return RedirectToAction("Job", "Job", new {id = jobId, session = request.User.Session, domain = request.User.Domain});
         }
 
     }

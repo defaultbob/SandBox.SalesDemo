@@ -11,22 +11,21 @@ namespace SalesDemo.Controllers
     {
         public async Task<IActionResult> Job(int id, string session, string domain)
         {
-            User user = new User()
-            {
-                Domain = domain,
-                Session = session
-            };
+            var user = new User(session, domain);
 
             Job job = await Services.VaultService.GetJobStatus(user, id);
+            job.User = user;
 
-            return View(new Job());
+            return View(job);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(Login login)
+        public async Task<IActionResult> Vault(Job job)
         {
-            User user = await Services.VaultService.Login(login);
-            return RedirectToAction("Index", "Sandbox", new { session = user.Session, domain = user.Domain });
+            var vault = await Services.VaultService.Activate(job);
+            return View(vault);
+            //return RedirectToAction("Activate", "Job", new { id = job.Id, session = job.User.Session, domain = job.User.Domain });
         }
+
     }
 }
