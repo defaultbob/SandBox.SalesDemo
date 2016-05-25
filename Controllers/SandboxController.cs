@@ -15,11 +15,11 @@ namespace SalesDemo.Controllers
         public async Task<IActionResult> Index(string session, string domain)
         {
             var user = new User(session, domain);
-            
+
             ViewBag.Domain = user.Domain;
 
             ViewBag.Error = await VaultService.ValidateUser(user);
-            
+
             return View(user);
         }
 
@@ -33,9 +33,16 @@ namespace SalesDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SandboxRequest request)
         {
-            var jobId = await VaultService.CreateSandboxRequest(request.User, request);
-            
-            return RedirectToAction("Job", "Job", new {id = jobId, session = request.User.Session, domain = request.User.Domain});
+            if (ModelState.IsValid)
+            {
+                var jobId = await VaultService.CreateSandboxRequest(request.User, request);
+
+                return RedirectToAction("Job", "Job", new { id = jobId, session = request.User.Session, domain = request.User.Domain });
+            }
+            else
+            {
+                return View(request);
+            }
         }
 
     }
