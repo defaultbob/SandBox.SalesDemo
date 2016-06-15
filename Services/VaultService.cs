@@ -69,7 +69,7 @@ namespace SalesDemo.Services
                     Console.WriteLine($"response: {responseJson}");
                     dynamic dynObj = JsonConvert.DeserializeObject(responseJson);
 
-                    if (dynObj.responseStatus != "SUCCESS")
+                    if (false)//dynObj.responseStatus != "SUCCESS")
                     {
                         throw new Exception($"Request to {baseUri} was unsuccessful. Result {dynObj.responseStatus}. Error {dynObj.errors[0]}");
                     }
@@ -77,9 +77,9 @@ namespace SalesDemo.Services
                     {
                         return new Vault()
                         {
-                            Id = dynObj.data.vault_id__v,
-                            Status = dynObj.data.vault_status__v,
-                            Dns = dynObj.data.vault_dns__v,
+                            Id = dynObj.data[0].vault_id__v,
+                            Status = dynObj.data[0].vault_status__v,
+                            Dns = dynObj.data[0].vault_dns__v,
                             Message = responseJson
                         };
                     }
@@ -109,7 +109,13 @@ namespace SalesDemo.Services
 
                     if (dynObj.responseStatus != "SUCCESS")
                     {
-                        throw new Exception($"Request to {baseUri} was unsuccessful. Result {dynObj.responseStatus}. Error {dynObj.errors[0]}");
+                        return new Job()
+                        {
+                            Id = id,
+                            Status = "FAILURE",
+                            Message = responseJson
+                        };
+                        //throw new Exception($"Request to {baseUri} was unsuccessful. Result {dynObj.responseStatus}. Error {dynObj.errors[0]}");
                     }
                     else
                     {

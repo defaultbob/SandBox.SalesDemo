@@ -23,7 +23,7 @@ namespace SalesDemo.Controllers
         public async Task<IActionResult> Vault(Job job)
         {
             var vault = await Services.VaultService.Activate(job);
-            return View(vault);
+            return Redirect($"https://{vault.Dns}");
             //return RedirectToAction("Activate", "Job", new { id = job.Id, session = job.User.Session, domain = job.User.Domain });
         }
 

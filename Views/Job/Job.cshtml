@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Job Details";
 }
+
+@section Header{
+    <META HTTP-EQUIV="refresh" CONTENT="15">
+}
+
 <h1>@ViewBag.Title</h1>
 <form asp-controller="Job" asp-action="Vault" method="POST" class="form-horizontal">
            
@@ -24,13 +29,13 @@
             <input asp-for="Status" class="form-control" disabled/>
         </div>
     </div>
-@if(Model.Status == "SUCCESS") {
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
+                @if(Model.Status == "SUCCESS") {
             <button type="submit" class="btn btn-default">Activate</button>
+}   
         </div>
     </div>
-}     
     <code lang="json">
         @Model.Message
     </code>    
