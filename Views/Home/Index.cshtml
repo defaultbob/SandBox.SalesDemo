@@ -35,6 +35,15 @@
     </div>    
 </form>
 
+<p>
+    To avoid having to supply credentials, add a custom tab to your Vault. Set <strong>Tab Type</strong> to "Web" and URL to below 
+    <br/>
+    <code id="code_url">
+        https://domain/Sandbox?Session=${Session.id}&Domain=${Vault.domain}
+    </code>
+    <img src="~/images/sshot.png" alt="tab setup screen shot">
+</p>
+
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

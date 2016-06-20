@@ -69,7 +69,7 @@ namespace SalesDemo.Services
                     Console.WriteLine($"response: {responseJson}");
                     dynamic dynObj = JsonConvert.DeserializeObject(responseJson);
 
-                    if (false)//dynObj.responseStatus != "SUCCESS")
+                    if (dynObj.responseStatus != "SUCCESS")
                     {
                         throw new Exception($"Request to {baseUri} was unsuccessful. Result {dynObj.responseStatus}. Error {dynObj.errors[0]}");
                     }
