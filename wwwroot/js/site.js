@@ -11,11 +11,29 @@ function getUrlVars() {
     return vars;
 }
 
+function inIframe() {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        return true;
+    }
+}
+
 $(document).ready(function () {
-    // var qsParams = getUrlVars();
-    // $('.maintainQueryParams').href += qsParams["session"];
+    var qsParams = getUrlVars();
+
+    $("a.maintainQueryParams").each(function () {
+        var $this = $(this);
+        var _href = $this.attr("href");
+        $this.attr("href", _href + "?session=" + qsParams["Session"] + "&domain=" + qsParams["Domain"]);
+    });
 
     $("#code_url").text(function () {
         return $(this).text().replace("domain", document.domain);
     });
+
+    if (inIframe()) {
+        $(".when_embedded").show();
+        $(".when_standalone").hide();
+    }
 });

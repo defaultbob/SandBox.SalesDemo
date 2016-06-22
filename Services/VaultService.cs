@@ -78,8 +78,7 @@ namespace SalesDemo.Services
                         return new Vault()
                         {
                             Id = dynObj.data[0].vault_id__v,
-                            Status = dynObj.data[0].vault_status__v,
-                            Dns = dynObj.data[0].vault_dns__v,
+                            Dns = "https://" + dynObj.data[0].vault_dns__v,
                             Message = responseJson
                         };
                     }
@@ -191,7 +190,7 @@ namespace SalesDemo.Services
                         else
                         {
                             var userReturned = dynObj.users[0];
-                            return $"Welcome {userReturned.user.user_first_name__v} {userReturned.user.user_last_name__v} for domain {user.Domain}";
+                            return $"Welcome {userReturned.user.user_first_name__v}";
                         }
                     }
                     else

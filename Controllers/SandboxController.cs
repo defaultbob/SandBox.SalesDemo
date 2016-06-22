@@ -30,6 +30,13 @@ namespace SalesDemo.Controllers
             return View(request);
         }
 
+         public IActionResult JobForm(User user)
+        {
+            var request = new SandboxRequest(user);
+
+            return View(request);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(SandboxRequest request)
         {

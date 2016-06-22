@@ -4,8 +4,10 @@
     ViewBag.Title = "Job Details";
 }
 
-@section Header{
-    <META HTTP-EQUIV="refresh" CONTENT="11">
+@if(Model.Status != "SUCCESS") {
+    @section Header{
+        <META HTTP-EQUIV="refresh" CONTENT="11">
+    }
 }
 
 <h1>@ViewBag.Title</h1>
@@ -29,17 +31,56 @@
             <input asp-for="Status" class="form-control" disabled/>
         </div>
     </div>
+@if(Model.Status == "SUCCESS") {
+    <p>
+    Your sandbox vault has been created - you will recieve an email with the temporary url.
+    <br/>
+    Indexing will now run in the background, you may experience some issues if you log in with 10 minutes of sandbox creation.
+    <br/>
+    When you are ready to activate the sandbox to the target DNS, click the Activate button - this action will delete the sandbox previously activated on this DNS (if any) 
+    </p>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-                @if(Model.Status == "SUCCESS") {
             <button type="submit" class="btn btn-default">Activate</button>
-}   
         </div>
     </div>
+}else{
+    <p>This page will auto-refresh</p>
+    <br/>
+    <br/>
+}   
     <code lang="json">
         @Model.Message
     </code>    
-    <br/>
-    <br/>
-    <p>This page will auto-refresh</p>
 </form>
+
+@section Scripts {
+    @if(Model.Status != "FAILURE") {
+    <script>
+        $(document).ready(function () {
+            var job_id = $("#Id").val();
+            var already_exists = false;
+            
+            var storage = window.localStorage;
+            var joblist = storage.getItem("jobids");
+            
+            var jobs = []
+            if(joblist){
+                jobs = joblist.split(',');
+            }
+            
+            for (var i = 0; i < jobs.length; i++){
+               already_exists=jobs[i] == job_id;
+               if(already_exists){
+                break;
+               }
+            }
+
+            if(!already_exists){
+                jobs.push(job_id);
+                storage.setItem("jobids", jobs.join(','));
+            }        
+        });
+    </script>
+    }
+}

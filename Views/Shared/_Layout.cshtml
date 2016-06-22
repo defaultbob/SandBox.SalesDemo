@@ -32,7 +32,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-controller="Sandbox" asp-action="Index">Home</a></li>
+                    <!--<li><a asp-controller="Sandbox" asp-action="Index">Home</a></li>-->
                     <li><a asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
@@ -43,14 +43,13 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2016 - SalesDemo</p>
+            <p>&copy; 2016</p>
         </footer>
     </div>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"
@@ -60,10 +59,11 @@
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-        </script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        </script>        
     </environment>
 
     @RenderSection("scripts", required: false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
 </body>
 </html>

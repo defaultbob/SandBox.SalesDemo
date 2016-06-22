@@ -1,0 +1,50 @@
+@model SalesDemo.Models.Job
+
+@{
+    ViewBag.Title = "Retrieve Job";
+}
+
+<h1>@ViewBag.Title</h1>
+<form asp-controller="Job" asp-action="Index" method="POST" class="form-horizontal">
+           
+    <input type="hidden" asp-for="User.Session"/>
+    <input type="hidden" asp-for="User.Domain"/>
+    
+    <div class="form-group">
+        <label asp-for="Id" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Id" class="form-control" />
+        </div>
+    </div>  
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Find</button>
+        </div>
+    </div>    
+</form>
+
+<h3 id="h3prev">Previous jobs</h3>
+<ul class="prev_jobs">
+</ul>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var storage = window.localStorage;
+            var joblist = storage.getItem("jobids");
+            
+            var jobs = []
+            if(joblist){
+                jobs = joblist.split(',');
+                $("#Id").val(jobs[0]);
+            }else{
+                $("#h3prev").hide();
+            }
+            
+            for (var i = 0; i < jobs.length; i++){
+               $('ul.prev_jobs').append("<li ><a class=\"maintainQueryParams\" href=\"/Job/Job/" + jobs[i] +"\">Job " + jobs[i] +"</a></li>");
+            }
+
+        });
+    </script> 
+}

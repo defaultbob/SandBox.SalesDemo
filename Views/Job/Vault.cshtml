@@ -1,31 +1,15 @@
 @model SalesDemo.Models.Vault
 
 @{
-    ViewBag.Title = "Vault details";
+    ViewBag.Title = "Success!";
 }
 
 <h1>@ViewBag.Title</h1>
-<form asp-controller="" asp-action="" method="" class="form-horizontal">
-    <div class="form-group">
-        <label asp-for="Id" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Id" class="form-control" />
-        </div>
-    </div>  
-    <div class="form-group">
-        <label asp-for="Status" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Status" class="form-control" />
-        </div>
-    </div>
-     <div class="form-group">
-        <label asp-for="Dns" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Dns" class="form-control" />
-        </div>
-    </div>
-    <code lang="json">
-         @Model.Message
-    </code>
-       
-</form>
+
+<p>
+    Your sandbox vault has been activated on the URL below.
+    <br/>
+    Indexing will now run in the background, you may experience some issues if you log in with 10 minutes of sandbox creation. 
+</p>
+
+<h2><a href="@Model.Dns">@Model.Dns</a></h2>

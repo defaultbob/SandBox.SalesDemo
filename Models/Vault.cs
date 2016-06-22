@@ -5,8 +5,8 @@ namespace SalesDemo.Models
     public class Vault
     {
         public int Id { get; set; }
-        public string Status { get; set; }
-        //[DataType(DataType.Url)]
+        
+        [DataType(DataType.Url)]
         public string Dns { get; set; }
         
         public string Message { get; set; }

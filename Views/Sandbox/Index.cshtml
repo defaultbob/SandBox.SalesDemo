@@ -4,14 +4,22 @@
 
 <form asp-controller="Sandbox" asp-action="Create" method="GET" class="form-horizontal">
      <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-default">Request a new demo sandbox</button>
+        <div class="col-md-10">
+            <button type="submit" class="btn btn-default">New demo sandbox</button>
+        </div>
+    </div>    
+    <input type="hidden" asp-for="Session"/>
+    <input type="hidden" asp-for="Domain"/>
+</form>
+
+
+<form asp-controller="Job" asp-action="Index" method="GET" class="form-horizontal">
+     <div class="form-group">
+        <div class="col-md-10">
+            <button type="submit" class="btn btn-default">Retrieve Job</button>
         </div>
     </div>
     
-        <input type="hidden" asp-for="Session"/>
-     <input type="hidden" asp-for="Domain"/>
+    <input type="hidden" asp-for="Session"/>
+    <input type="hidden" asp-for="Domain"/>
 </form>
-<p>
-Your sandbox requests will be here soon... 
-</p>
