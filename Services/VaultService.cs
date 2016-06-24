@@ -77,9 +77,9 @@ namespace SalesDemo.Services
                     {
                         return new Vault()
                         {
-                            Id = dynObj.data[0].vault_id__v,
-                            Dns = "https://" + dynObj.data[0].vault_dns__v,
-                            Message = responseJson
+                            Id = dynObj.data[0].vault_id__v ?? 0,
+                            Dns = "https://" + dynObj.data[0].vault_dns__v ?? "error",
+                            Message = responseJson ?? ""
                         };
                     }
                 }
