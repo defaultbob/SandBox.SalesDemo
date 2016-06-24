@@ -56,31 +56,10 @@
 
 @section Scripts {
     @if(Model.Status != "FAILURE") {
-    <script>
-        $(document).ready(function () {
-            var job_id = $("#Id").val();
-            var already_exists = false;
-            
-            var storage = window.localStorage;
-            var joblist = storage.getItem("jobids");
-            
-            var jobs = []
-            if(joblist){
-                jobs = joblist.split(',');
-            }
-            
-            for (var i = 0; i < jobs.length; i++){
-               already_exists=jobs[i] == job_id;
-               if(already_exists){
-                break;
-               }
-            }
-
-            if(!already_exists){
-                jobs.push(job_id);
-                storage.setItem("jobids", jobs.join(','));
-            }        
-        });
-    </script>
+        <script>
+            $(document).ready(function () {
+                saveJobIdToLocalStorage();            
+            });
+        </script>
     }
 }

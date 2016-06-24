@@ -19,6 +19,52 @@ function inIframe() {
     }
 }
 
+function saveJobIdToLocalStorage() {
+    var job_id = $("#Id").val();
+    var already_exists = false;
+
+    var storage = window.localStorage;
+    var domain = $('#User_Domain').val();
+    var key = "jobids_" + domain;
+    var joblist = storage.getItem(key);
+
+    var jobs = []
+    if (joblist) {
+        jobs = joblist.split(',');
+    }
+
+    for (var i = 0; i < jobs.length; i++) {
+        already_exists = jobs[i] == job_id;
+        if (already_exists) {
+            break;
+        }
+    }
+
+    if (!already_exists) {
+        jobs.push(job_id);
+        storage.setItem(key, jobs.join(','));
+    }
+}
+
+function showJobIds() {
+    var storage = window.localStorage;
+    var domain = $('#User_Domain').val();
+    var key = "jobids_" + domain;
+    var joblist = storage.getItem(key);
+
+    var jobs = []
+    if (joblist) {
+        jobs = joblist.split(',');
+        $("#Id").val(jobs[jobs.length -1]);
+    } else {
+        $("#h3prev").hide();
+    }
+
+    for (var i = 0; i < jobs.length; i++) {
+        $('ul.prev_jobs').append("<li ><a class=\"maintainQueryParams\" href=\"/Job/Job/" + jobs[i] + "\">Job " + jobs[i] + "</a></li>");
+    }
+}
+
 $(document).ready(function () {
     var qsParams = getUrlVars();
 

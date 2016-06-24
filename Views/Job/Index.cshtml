@@ -30,21 +30,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            var storage = window.localStorage;
-            var joblist = storage.getItem("jobids");
-            
-            var jobs = []
-            if(joblist){
-                jobs = joblist.split(',');
-                $("#Id").val(jobs[0]);
-            }else{
-                $("#h3prev").hide();
-            }
-            
-            for (var i = 0; i < jobs.length; i++){
-               $('ul.prev_jobs').append("<li ><a class=\"maintainQueryParams\" href=\"/Job/Job/" + jobs[i] +"\">Job " + jobs[i] +"</a></li>");
-            }
-
+            showJobIds();
         });
     </script> 
 }
